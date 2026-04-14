@@ -1,101 +1,225 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.0">
-		<title>Scouting PASS</title>
-		<link rel="shortcut icon" href="favicon.ico">
-		<link rel="icon" sizes="16x16 32x32 64x64" href="favicon.ico">
-		<script src="resources/js/easy.qrcode.min.js"></script>
-		<script src="resources/js/TBAInterface.js"></script>
-		<script src="resources/js/googleSheets.js"></script>
-		<script src="resources/js/scoutingPASS.js"></script>
-		<script src="2024/crescendo_config.js"></script>
-		<link rel="stylesheet" href="resources/css/scoutingPASS.css">
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwapNGo | Subscription Equipment Delivery</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+            color: #f39c12; /* Switched to an industrial/equipment orange */
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #eee;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .cta-box {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: inline-block;
+            max-width: 450px;
+            width: 90%;
+            color: #333;
+        }
+        .cta-box h3 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #1a1a1a;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+            text-transform: uppercase;
+        }
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .btn {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #e67e22;
+        }
+        .features {
+            padding: 80px 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-item h4 {
+            color: #e67e22;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .feature-item p {
+            font-size: 16px;
+            color: #555;
+        }
+        footer {
+            background-color: #1a1a1a;
+            color: #999;
+            padding: 40px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .social-links {
+            margin-bottom: 20px;
+        }
+        .social-links a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            color: #f39c12;
+        }
+        .smoke-screen-notice {
+            margin-top: 30px;
+            font-style: italic;
+            font-size: 12px;
+            color: #777;
+        }
+        
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
 
-	<body>
-		<form id="scoutingForm" onsubmit="return false" name="scoutingForm">
-			<div id="main-panel-holder">
-				<div id="prematch" class="main-panel" style="background-color: black;">
-					<h1 id="prematchHeader1" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">N</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2 id="prematchHeader2">pre-match</h2>
-					<p class="match-label"><input type="button" value="Next" id="nextButton1" onclick="swipePage(1)"></p>
-					<table id="prematch_table" style="font: Roboto">
-					<!-- ###PRE-MATCH-COMPONENTS###-->
-					</table>
-					<p class="match-label"><input type="button" value="Next" id="nextButton2" onclick="swipePage(1)"></p>
-				</div>
+    <header>
+        <h1>SWAPNGO</h1>
+        <nav>
+            <a href="#">How it works</a>
+            <a href="#">Equipment Fleet</a>
+            <a href="#">Pricing</a>
+        </nav>
+    </header>
 
-				<div id="auton" class="main-panel" style="background-color: rgb(123, 168, 184);">
-					<h1 id="autonHeader1" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">n</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2 id="autonHeader2">Auton</h2>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton1" onclick="swipePage(-1)"><input type="button" value="Next" id="nextButton3" onclick="swipePage(1)"></p>
-					<table id="auton_table">
-					<!-- ###AUTON-COMPONENTS###-->
-					</table>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton2" onclick="swipePage(-1)"> <input type="button" value="Next" id="nextButton4" onclick="swipePage(1)"></p>
-				</div>
+    <section class="hero">
+        <h2>Own the Result, Not the Equipment.</h2>
+        <p>Unlimited access to premium lawn mowers, weedwackers, generators, and heavy tools. Delivered straight to your door for one flat monthly subscription.</p>
+        
+        <div class="cta-box">
+            <h3>Join the Founders Club</h3>
+            <p style="font-size: 15px; margin-bottom: 25px; color: #666;">We are rolling out delivery zones now. Sign up to lock in early-bird subscription pricing.</p>
+            <form>
+                <div class="input-group">
+                    <label>What do you need delivered first?</label>
+                    <select>
+                        <option>Lawn Mower / Yard Care</option>
+                        <option>Weedwacker / Trimmer</option>
+                        <option>Portable Generator</option>
+                        <option>Pressure Washer</option>
+                        <option>Heavy Saws & Tools</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="Enter your email" required>
+                </div>
+                <button type="button" class="btn">REQUEST INVITE</button>
+            </form>
+        </div>
+    </section>
 
-				<div id="teleop" class="main-panel" style="background-color: rgb(175, 207, 163);">
-					<h1 id="teleopHeader1" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">n</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2 id="teleopHeader2" >Teleop</h2>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton3" onclick="swipePage(-1)"><input type="button" value="Next" id="nextButton5" onclick="swipePage(1)"></p>
-					<table id="teleop_table">
-						<!-- ###TELEOP-COMPONENTS###-->
-					</table>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton4" onclick="swipePage(-1)"> <input type="button" value="Next" id="nextButton6" onclick="swipePage(1)"></p>
-				</div>
+    <section class="features">
+        <div class="feature-item">
+            <h4>Delivered & Picked Up</h4>
+            <p>Order what you need through the app. We drop it off at your door and pick it up the moment you are finished working.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Zero Maintenance</h4>
+            <p>Never buy gas, change oil, or fix a broken motor again. Every piece of equipment arrives fully serviced, fueled, and ready to rip.</p>
+        </div>
+        <div class="feature-item">
+            <h4>One Flat Subscription</h4>
+            <p>Pay one monthly fee for unlimited swaps. Stop cluttering your garage with expensive tools you only use twice a year.</p>
+        </div>
+    </section>
 
-				<div id="endgame" class="main-panel" style="background-color: rgb(198, 186, 222);">
-					<h1 id="endgameHeader1" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">n</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2 id="endgameHeader2">Endgame</h2>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton5" onclick="swipePage(-1)"><input type="button" value="Next" id="nextButton7" onclick="swipePage(1)"></p>
-					<table id="endgame_table">
-						<!-- ###ENDGAME-COMPONENTS###-->
-					</table>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton6" onclick="swipePage(-1)"> <input type="button" value="Next" id="nextButton8" onclick="swipePage(1)"></p>
-				</div>
+    <footer>
+        <div class="social-links">
+            <a href="#">Instagram</a> | 
+            <a href="#">Twitter/X</a> | 
+            <a href="#">Facebook</a> | 
+            <a href="#">LinkedIn</a>
+        </div>
+        <p>&copy; 2026 SwapNGo Technologies Inc. All rights reserved.</p>
+        <p>The smartest tool shed is the one you don't have to clean.</p>
+        <div class="smoke-screen-notice">
+            * We are currently testing demand and establishing delivery routes in select zip codes. Joining the waitlist does not require a credit card.
+        </div>
+    </footer>
 
-				<div id="post-match" class="main-panel" style="background-color: rgb(89, 134, 168);">
-					<h1 id="postmatchHeader" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">n</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2>Miscellaneous</h2>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton7" onclick="swipePage(-1)"><input type="button" value="Next" id="nextButton9" onclick="swipePage(1)"></p>
-					<table id="postmatch_table">
-						<!-- ###POST-MATCH-COMPONENTS###-->
-					</table>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton8" onclick="swipePage(-1)"> <input type="button" value="Next" id="nextButton10" onclick="swipePage(1)"></p>
-				</div>
-
-				<div id="qr-code" class="main-panel" style="background-color: white;">
-					<h1 id="qrHeader1" class="page_title"><span class="odd">P</span><span class="even">W</span><span class="odd">n</span><span class="even">A</span><span class="odd">G</span><span class="even">E</span><br>Scouting 2020</h1>
-					<h2 id="qrHeader2">Generate QR Code</h2>
-					<p class="match-label"><input type="button" value="Prev" id="prevButton9" onclick="swipePage(-1)"></p>
-					<p id="qr-info"><span id="display_qr-info" style="border: none; text-align: center;"></span></p>
-					<table id="qr-table"><tr><td width="5%">&nbsp;</td><td width="90%">
-						<div id="qrcode" style="text-align:center">
-							<script>
-						// Create QRCode Object
-								qr = new QRCode(document.getElementById("qrcode"), options)
-					</script>
-					</div>
-				</td><td width="5%">&nbsp;</td></tr>
-				<tr><td width="5%">&nbsp;</td><td width="90%">
-					<div>
-						<p id="data" style="text-align:center"></p>
-					</div>
-				</td><td width="5%">&nbsp;</td></tr>
-			</table>
-					<p></p>
-					<p class="match-label"><input type="button" value="Display Data" id="displayButton" onclick="displayData()"><input type="button" value="Copy Data" id="copyButton" onclick="copyData()"></p>
-					<div id="submitButton">
-						<button id="submit" type="submit" class="submitForm">Send to Google Sheets</button>
-					</div>
-					<div id="clearButton">
-						<button type="button" class="clearForm" onclick="clearForm()">Clear Form</button>
-					</div>
-					<br>
-				</div>
-			</div>
-		</form>
-	</body>
+</body>
 </html>
